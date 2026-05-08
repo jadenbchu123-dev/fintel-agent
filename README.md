@@ -2,7 +2,7 @@
 
 AI-powered equity research tool. Enter any stock ticker and get a full analyst-style report — financials, valuation, risks, and outlook — generated in real time using Claude.
 
-![Dark UI with metrics dashboard and streaming AI report](https://raw.githubusercontent.com/jadenbchu/fintel-agent/main/screenshot.png)
+![Dark UI with metrics dashboard and streaming AI report](https://raw.githubusercontent.com/jadenbchu123-dev/fintel-agent/main/screenshot.png)
 
 ---
 
@@ -85,4 +85,4 @@ Most AI finance tools use OpenAI. This project is built on the Anthropic SDK wit
 
 ---
 
-*Built by [Jaden Chu](https://github.com/jadenbchu)*
+*Built by [Jaden Chu](https://github.com/jadenbchu123-dev) · [LinkedIn](https://www.linkedin.com/in/jaden-chu-68b52b34b/)*
