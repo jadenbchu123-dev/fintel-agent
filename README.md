@@ -31,7 +31,7 @@ AI-powered equity research tool. Enter any stock ticker and get a full analyst-s
 **1. Clone and install dependencies**
 
 ```bash
-git clone https://github.com/jadenbchu/fintel-agent.git
+git clone https://github.com/jadenbchu123-dev/fintel-agent.git
 cd fintel-agent
 pip install -r requirements.txt
 ```
