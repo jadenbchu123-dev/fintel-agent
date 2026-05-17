@@ -28,15 +28,19 @@ AI-powered equity research tool. Enter any stock ticker and get a full analyst-s
 
 ## Run Locally
 
-**1. Clone and install dependencies**
+**1. Clone the repo and set up a virtual environment**
 
 ```bash
 git clone https://github.com/jadenbchu123-dev/fintel-agent.git
 cd fintel-agent
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 **2. Set your Anthropic API key**
+
+Get a key at [console.anthropic.com](https://console.anthropic.com), then:
 
 ```bash
 export ANTHROPIC_API_KEY=your_key_here
