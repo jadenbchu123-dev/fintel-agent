@@ -1,17 +1,19 @@
 # fintel-agent
 
-AI-powered equity research tool. Enter any stock ticker and get a full analyst-style report — financials, valuation, risks, and outlook — generated in real time using Claude.
+AI-powered equity research tool. Enter any stock ticker and get a full analyst-style report — financials, valuation, risks, and outlook — generated using Claude.
 
-![Dark UI with metrics dashboard and streaming AI report](https://raw.githubusercontent.com/jadenbchu123-dev/fintel-agent/main/screenshot.png)
+**Live app:** [fintel-agent.vercel.app](https://fintel-agent.vercel.app)
+
+![Dark UI with metrics dashboard and AI report](https://raw.githubusercontent.com/jadenbchu123-dev/fintel-agent/main/screenshot.png)
 
 ---
 
 ## What It Does
 
 - Pulls 20+ live data points from Yahoo Finance (price, P/E, revenue, EPS, free cash flow, etc.)
-- Renders an interactive metrics dashboard and 3 Plotly charts (price history, annual revenue, EPS trend)
-- Streams a structured analyst report via Claude with adaptive thinking enabled
-- Lets you download the report as a `.md` file
+- Renders an interactive metrics dashboard with 3 charts (price history, annual revenue, EPS trend)
+- Generates a structured analyst report via Claude with adaptive thinking enabled
+- Caches reports for 30 days to reduce API costs
 
 ---
 
@@ -19,50 +21,57 @@ AI-powered equity research tool. Enter any stock ticker and get a full analyst-s
 
 | Layer | Tool |
 |---|---|
-| AI | Claude API (`claude-opus-4-7`) — streaming, adaptive thinking, prompt caching |
-| Data | yfinance — live Yahoo Finance data, no API key needed |
-| UI | Streamlit — dark theme, Space Grotesk font |
-| Charts | Plotly — interactive price history, revenue, EPS |
+| AI | Claude API (`claude-opus-4-7`) — adaptive thinking, prompt caching |
+| Data | yfinance — live Yahoo Finance data |
+| Backend | FastAPI — REST API with SQLite caching |
+| Frontend | React + Vite — recharts for data visualization |
+| Deployment | Render (backend) · Vercel (frontend) |
+
+---
+
+## Architecture
+
+```
+React frontend (Vercel)
+    ↓ GET /report/{ticker}
+FastAPI backend (Render)
+    ↓ cache miss
+fetcher.py → yfinance
+reporter.py → Claude API
+    ↓
+SQLite cache (30-day TTL)
+```
 
 ---
 
 ## Run Locally
 
-**1. Clone the repo and set up a virtual environment**
+**1. Clone the repo**
 
 ```bash
 git clone https://github.com/jadenbchu123-dev/fintel-agent.git
 cd fintel-agent
-python3 -m venv .venv
-source .venv/bin/activate
+```
+
+**2. Start the backend**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-```
-
-**2. Set your Anthropic API key**
-
-Get a key at [console.anthropic.com](https://console.anthropic.com), then:
-
-```bash
 export ANTHROPIC_API_KEY=your_key_here
+uvicorn api:app --reload
 ```
 
-**3. Launch the web app**
+**3. Start the frontend**
 
 ```bash
-streamlit run app.py
+cd frontend
+npm install
+npm run dev
 ```
 
-Open `http://localhost:8501`, enter a ticker like `AAPL` or `NVDA`, and click **Generate Report**.
-
----
-
-## CLI Mode
-
-```bash
-python main.py AAPL
-```
-
-Saves the report as a `.md` file in the `reports/` folder.
+Open `http://localhost:5173`, enter a ticker like `AAPL` or `NVDA`, and click **Generate Report**.
 
 ---
 
@@ -70,10 +79,14 @@ Saves the report as a `.md` file in the `reports/` folder.
 
 ```
 fintel-agent/
-├── app.py           # Streamlit web UI
+├── api.py           # FastAPI backend — REST endpoints, CORS
 ├── fetcher.py       # Pulls live data from Yahoo Finance
-├── reporter.py      # Claude API integration — streaming + adaptive thinking
-├── main.py          # CLI entry point
+├── reporter.py      # Claude API integration — adaptive thinking, prompt caching
+├── cache.py         # SQLite caching layer — 30-day TTL
+├── frontend/        # React + Vite UI
+│   └── src/
+│       ├── App.jsx  # Main UI component
+│       └── App.css  # Styles
 └── requirements.txt
 ```
 
@@ -81,11 +94,9 @@ fintel-agent/
 
 ## Why Claude?
 
-Most AI finance tools use OpenAI. This project is built on the Anthropic SDK with features that matter for deep analysis:
-
 - **Adaptive thinking** — Claude reasons through the data before writing
-- **Prompt caching** — the system prompt is cached to reduce latency and cost on repeat runs
-- **Streaming** — the report appears token by token, not all at once
+- **Prompt caching** — system prompt is cached to reduce latency and cost
+- **Data-grounded** — report is generated from live financial data, not training knowledge
 
 ---
 
