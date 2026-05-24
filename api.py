@@ -1,3 +1,4 @@
+import traceback
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fetcher import fetch
@@ -25,12 +26,12 @@ def get_report(ticker: str):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch data: {e}")
+        raise HTTPException(status_code=500, detail=f"Fetch error: {type(e).__name__}: {e}\n{traceback.format_exc()}")
 
     try:
         report = generate_report(data)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to generate report: {e}")
+        raise HTTPException(status_code=500, detail=f"Report error: {type(e).__name__}: {e}\n{traceback.format_exc()}")
 
     save_to_cache(ticker.upper(), data, report)
     return {"data": data, "report": report, "cached": False}
