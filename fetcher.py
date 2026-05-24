@@ -1,10 +1,18 @@
 import yfinance as yf
 import pandas as pd
+import requests
+
+_session = requests.Session()
+_session.headers["User-Agent"] = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0.0.0 Safari/537.36"
+)
 
 
 def fetch(ticker: str) -> dict:
     try:
-        t = yf.Ticker(ticker)
+        t = yf.Ticker(ticker, session=_session)
         info = t.info
     except Exception as e:
         raise ValueError(f"Failed to retrieve data for '{ticker}': {e}")
