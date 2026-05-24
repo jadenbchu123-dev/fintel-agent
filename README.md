@@ -92,11 +92,18 @@ fintel-agent/
 
 ---
 
-## Why Claude?
+## Why not just ask Claude directly?
 
-- **Adaptive thinking** — Claude reasons through the data before writing
-- **Prompt caching** — system prompt is cached to reduce latency and cost
-- **Data-grounded** — report is generated from live financial data, not training knowledge
+You could — but you'd have to manually look up the current price, revenue, EPS, free cash flow, analyst consensus, and a dozen other metrics, then paste them into a prompt, and remember the exact structure that produces a useful report. Every time.
+
+fintel-agent packages that entire workflow into one input: a ticker symbol.
+
+- **Live, verified data** — Claude's training has a cutoff. fintel-agent pulls today's price, last quarter's earnings, and current analyst consensus from Yahoo Finance in real time. The report is grounded in real numbers, not training memory.
+- **Pre-built prompt engineering** — the system prompt, report structure, and data formatting are already optimized. You don't need to know how to ask — just enter a ticker.
+- **Consistent output** — every report follows the same five-section structure: Overview, Financials, Trends, Risks, Outlook. Asking Claude directly gives you a different format every time.
+- **30-day cache** — popular tickers return instantly at zero API cost.
+
+fintel-agent isn't smarter than Claude — it makes Claude more accurate by grounding every report in live, verified financial data instead of training memory.
 
 ---
 
