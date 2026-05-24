@@ -3,11 +3,13 @@ import pandas as pd
 import requests
 
 _session = requests.Session()
-_session.headers["User-Agent"] = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/124.0.0.0 Safari/537.36"
-)
+_session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+})
 
 
 def fetch(ticker: str) -> dict:
@@ -18,7 +20,7 @@ def fetch(ticker: str) -> dict:
         raise ValueError(f"Failed to retrieve data for '{ticker}': {e}")
 
     if not info or info.get("quoteType") is None:
-        raise ValueError(f"'{ticker}' is not a recognized stock ticker.")
+        raise ValueError(f"'{ticker}' returned empty data from Yahoo Finance. This may be a rate limit issue — try again in a moment.")
 
     quote_type = info.get("quoteType", "")
     if quote_type not in ("EQUITY", "ETF"):
