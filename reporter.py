@@ -80,10 +80,8 @@ def generate_report(data: dict) -> str:
 
     with client.messages.stream(**_stream_params(data)) as stream:
         for chunk in stream.text_stream:
-            print(chunk, end="", flush=True)
             full_text += chunk
 
-    print()
     return full_text
 
 

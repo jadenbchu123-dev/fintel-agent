@@ -3,3 +3,5 @@ yfinance
 pandas
 streamlit
 plotly
+fastapi
+uvicorn
